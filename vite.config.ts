@@ -1,6 +1,7 @@
 import { cloudflareDevProxyVitePlugin as remixCloudflareDevProxy, vitePlugin as remixVitePlugin } from '@remix-run/dev';
 import UnoCSS from 'unocss/vite';
 import { defineConfig, type ViteDevServer } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -131,6 +132,94 @@ export default defineConfig((config) => {
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        injectRegister: false, // We will handle registration in app/root.tsx
+        manifestFilename: 'manifest.json', // Explicitly point to our manifest file
+        workbox: {
+          globPatterns: ['assets/**/*.{js,css,svg,png,ico,woff2}', 'manifest.json', 'logo.svg', 'apple-touch-icon.png', 'favicon.ico', 'favicon.svg'], // More specific precaching
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+          runtimeCaching: [
+            {
+              urlPattern: ({ request, url }) => request.destination === 'image' || url.pathname.endsWith('.svg') || url.pathname.endsWith('.png'),
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'images-cache',
+                expiration: {
+                  maxEntries: 200,
+                  maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
+              urlPattern: ({ request }) => request.destination === 'font',
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'fonts-cache',
+                expiration: {
+                  maxEntries: 50,
+                  maxAgeSeconds: 60 * 24 * 60 * 60, // 60 Days
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            // API Caching Examples
+            {
+              urlPattern: ({ url }) => url.pathname.startsWith('/api/models'),
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'api-models-cache',
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 24 * 60 * 60, // 1 day
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
+              urlPattern: ({ url }) => url.pathname.startsWith('/api/chat') || url.pathname.startsWith('/api/llmcall'),
+              handler: 'NetworkFirst', // For GET requests; POSTs are ignored by default
+              options: {
+                cacheName: 'api-chat-cache',
+                networkTimeoutSeconds: 3, // Timeout for network request
+                expiration: {
+                  maxEntries: 50, // Cache last 50 chat related GET responses
+                  maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            },
+            {
+              urlPattern: ({ url }) => url.pathname.startsWith('/api/system') || url.pathname.startsWith('/api/health') || url.pathname.startsWith('/api/update'),
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'api-system-cache',
+                networkTimeoutSeconds: 3,
+                expiration: {
+                  maxEntries: 10,
+                  maxAgeSeconds: 1 * 24 * 60 * 60, // 1 day
+                },
+                cacheableResponse: {
+                  statuses: [0, 200],
+                },
+              },
+            }
+          ],
+        },
+        devOptions: {
+          enabled: true, // Enable PWA features in dev for testing
+          type: 'module', // Recommended for Vite
+        },
+      }),
     ],
     envPrefix: [
       'VITE_',
