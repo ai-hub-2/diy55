@@ -7,14 +7,21 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-bolt-elements-background text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-2',
-        destructive: 'bg-red-500 text-white hover:bg-red-600',
+        default: 'bg-[var(--bolt-elements-button-primary-background)] text-[var(--bolt-elements-button-primary-text)] hover:bg-[var(--bolt-elements-button-primary-backgroundHover)]',
+        destructive:
+          'bg-[var(--m3-sys-color-error)] text-[var(--m3-sys-color-on-error)] hover:bg-[var(--m3-sys-color-error-container)] hover:text-[var(--m3-sys-color-on-error-container)]',
         outline:
-          'border border-bolt-elements-borderColor bg-transparent hover:bg-bolt-elements-background-depth-2 hover:text-bolt-elements-textPrimary text-bolt-elements-textPrimary dark:border-bolt-elements-borderColorActive',
+          'border border-[var(--bolt-elements-borderColor)] bg-transparent hover:bg-[var(--bolt-elements-background-depth-2)] hover:text-[var(--bolt-elements-textPrimary)] text-[var(--bolt-elements-textPrimary)]',
+        // Note: The dark:border-bolt-elements-borderColorActive was removed.
+        // --bolt-elements-borderColor is now var(--m3-sys-color-outline-variant)
+        // --bolt-elements-borderColorActive is var(--m3-sys-color-primary)
+        // M3 outlines should provide correct contrast on light/dark. If specific primary border on dark is needed, it would be:
+        // 'border border-[var(--m3-sys-color-outline-variant)] dark:border-[var(--m3-sys-color-primary)] ...'
+        // For now, relying on the single M3 outline variable.
         secondary:
-          'bg-bolt-elements-background-depth-1 text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-2',
-        ghost: 'hover:bg-bolt-elements-background-depth-1 hover:text-bolt-elements-textPrimary',
-        link: 'text-bolt-elements-textPrimary underline-offset-4 hover:underline',
+          'bg-[var(--bolt-elements-button-secondary-background)] text-[var(--bolt-elements-button-secondary-text)] hover:bg-[var(--bolt-elements-button-secondary-backgroundHover)]',
+        ghost: 'hover:bg-[var(--bolt-elements-background-depth-1)] hover:text-[var(--bolt-elements-textPrimary)] text-[var(--bolt-elements-textPrimary)]',
+        link: 'text-[var(--bolt-elements-textPrimary)] underline-offset-4 hover:underline',
       },
       size: {
         default: 'h-9 px-4 py-2',

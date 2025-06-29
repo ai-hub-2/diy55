@@ -11,17 +11,24 @@ html,
 body {
   height: 100%;
   width: 100%;
+  font-family: 'Inter', sans-serif; /* Assuming Inter is primary, with fallback */
+  color: var(--m3-sys-color-on-background);
+  background-color: var(--m3-sys-color-background);
+  font-size: 16px; /* M3 default body large size */
+  line-height: 1.5;  /* M3 default line height */
+  -webkit-font-smoothing: antialiased; /* Improve font rendering */
+  -moz-osx-font-smoothing: grayscale; /* Improve font rendering */
 }
 
+/* Remove old gradient variables */
+/*
 :root {
   --gradient-opacity: 0.8;
   --primary-color: rgba(158, 117, 240, var(--gradient-opacity));
   --secondary-color: rgba(138, 43, 226, var(--gradient-opacity));
   --accent-color: rgba(128, 59, 239, var(--gradient-opacity));
-  // --primary-color: rgba(147, 112, 219, var(--gradient-opacity));
-  // --secondary-color: rgba(138, 43, 226, var(--gradient-opacity));
-  // --accent-color: rgba(180, 170, 220, var(--gradient-opacity));
 }
+*/
 
 .modern-scrollbar {
   overflow: auto;
