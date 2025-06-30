@@ -1,6 +1,21 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "bolt"
 compatibility_flags = ["nodejs_compat"]
-compatibility_date = "2025-03-28"
+compatibility_date = "2025-03-28" # Keep this updated to a recent date
 pages_build_output_dir = "./build/client"
 send_metrics = false
+
+# Define the KV namespace for Yjs
+# IMPORTANT: Replace 'your-kv-namespace-id' and 'your-preview-kv-namespace-id'
+# with actual IDs from your Cloudflare dashboard after creating the KV namespace.
+[[kv_namespaces]]
+binding = "YJS_KV_STORE"
+id = "your-kv-namespace-id" # Production KV ID
+preview_id = "your-preview-kv-namespace-id" # Preview KV ID (for wrangler dev, and preview deployments)
+
+# Ensure the 'functions' directory is correctly picked up for Pages Functions.
+# This is usually implicit if 'functions' directory exists at the root.
+# Explicitly defining it can help in some configurations.
+[functions]
+directory = "./functions"
+# Add any specific settings for function bundling if needed, though defaults often work.
