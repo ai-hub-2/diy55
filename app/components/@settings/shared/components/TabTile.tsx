@@ -34,8 +34,8 @@ export const TabTile: React.FC<TabTileProps> = ({
           <motion.div
             onClick={onClick}
             className={classNames(
-              'relative flex flex-col items-center p-6 rounded-xl',
-              'w-full h-full min-h-[160px]',
+              'relative flex flex-col items-center p-6 rounded-xl', // p-6 should scale if rem-based (1.5rem*12px=18px)
+              'w-full h-full min-h-[10rem]', // Original: min-h-[160px]. Scaled: 120px -> 10rem
               'bg-white dark:bg-[#141414]',
               'border border-[#E5E5E5] dark:border-[#333333]',
               'group',
@@ -52,7 +52,8 @@ export const TabTile: React.FC<TabTileProps> = ({
               <motion.div
                 className={classNames(
                   'relative',
-                  'w-14 h-14',
+                  // Original: w-14 h-14 (56px). Scaled: w-[3.5rem] h-[3.5rem] (42px)
+                  'w-[3.5rem] h-[3.5rem]',
                   'flex items-center justify-center',
                   'rounded-xl',
                   'bg-gray-100 dark:bg-gray-800',
@@ -65,7 +66,8 @@ export const TabTile: React.FC<TabTileProps> = ({
                 <motion.div
                   className={classNames(
                     TAB_ICONS[tab.id],
-                    'w-8 h-8',
+                    // Original: w-8 h-8 (32px). Scaled: w-[2rem] h-[2rem] (24px)
+                    'w-[2rem] h-[2rem]',
                     'text-gray-600 dark:text-gray-300',
                     'group-hover:text-purple-500 dark:group-hover:text-purple-400/80',
                     isActive ? 'text-purple-500 dark:text-purple-400/90' : '',
@@ -77,7 +79,8 @@ export const TabTile: React.FC<TabTileProps> = ({
               <div className="flex flex-col items-center mt-5 w-full">
                 <h3
                   className={classNames(
-                    'text-[15px] font-medium leading-snug mb-2',
+                    // Original: text-[15px]. Scaled: text-[0.9375rem] (11.25px)
+                    'text-[0.9375rem] font-medium leading-snug mb-2',
                     'text-gray-700 dark:text-gray-200',
                     'group-hover:text-purple-600 dark:group-hover:text-purple-300/90',
                     isActive ? 'text-purple-500 dark:text-purple-400/90' : '',
@@ -88,7 +91,8 @@ export const TabTile: React.FC<TabTileProps> = ({
                 {description && (
                   <p
                     className={classNames(
-                      'text-[13px] leading-relaxed',
+                      // Original: text-[13px]. Scaled: text-[0.8125rem] (9.75px)
+                      'text-[0.8125rem] leading-relaxed',
                       'text-gray-500 dark:text-gray-400',
                       'max-w-[85%]',
                       'text-center',

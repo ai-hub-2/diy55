@@ -25,9 +25,9 @@ export default function ConnectionsTab() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header - allow wrapping on small screens */}
       <motion.div
-        className="flex items-center justify-between gap-2"
+        className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2" // Added flex-wrap and gap-y
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}

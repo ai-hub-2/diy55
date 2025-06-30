@@ -1,5 +1,6 @@
+// Original: $code-font-size: 13px. Scaled: 9.75px -> 0.8125rem (based on 12px root)
 $font-mono: ui-monospace, 'Fira Code', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-$code-font-size: 13px;
+$code-font-size: 0.8125rem;
 
 @mixin not-inside-actions {
   &:not(:has(:global(.actions)), :global(.actions *)) {
@@ -12,7 +13,8 @@ $code-font-size: 13px;
   color: var(--bolt-elements-textPrimary);
 
   > *:not(:last-child) {
-    margin-block-end: 16px;
+    // Original: 16px. Scaled: 12px -> 1rem
+    margin-block-end: 1rem;
   }
 
   :global(.artifact) {
@@ -21,8 +23,10 @@ $code-font-size: 13px;
 
   :is(h1, h2, h3, h4, h5, h6) {
     @include not-inside-actions {
-      margin-block-start: 24px;
-      margin-block-end: 16px;
+      // Original: 24px. Scaled: 18px -> 1.5rem
+      margin-block-start: 1.5rem;
+      // Original: 16px. Scaled: 12px -> 1rem
+      margin-block-end: 1rem;
       font-weight: 600;
       line-height: 1.25;
       color: var(--bolt-elements-textPrimary);
@@ -30,15 +34,17 @@ $code-font-size: 13px;
   }
 
   h1 {
-    font-size: 2em;
-    border-bottom: 1px solid var(--bolt-elements-borderColor);
-    padding-bottom: 0.3em;
+    font-size: 2em; // em units are responsive
+    // Original: 1px. Scaled: 0.75px -> 0.0625rem
+    border-bottom: 0.0625rem solid var(--bolt-elements-borderColor);
+    padding-bottom: 0.3em; // em units are responsive
   }
 
   h2 {
-    font-size: 1.5em;
-    border-bottom: 1px solid var(--bolt-elements-borderColor);
-    padding-bottom: 0.3em;
+    font-size: 1.5em; // em units are responsive
+    // Original: 1px. Scaled: 0.75px -> 0.0625rem
+    border-bottom: 0.0625rem solid var(--bolt-elements-borderColor);
+    padding-bottom: 0.3em; // em units are responsive
   }
 
   h3 {
@@ -63,7 +69,8 @@ $code-font-size: 13px;
 
     &:not(:last-of-type) {
       margin-block-start: 0;
-      margin-block-end: 16px;
+      // Original: 16px. Scaled: 12px -> 1rem
+      margin-block-end: 1rem;
     }
   }
 
@@ -82,16 +89,19 @@ $code-font-size: 13px;
     font-size: $code-font-size;
 
     @include not-inside-actions {
-      border-radius: 6px;
-      padding: 0.2em 0.4em;
+      // Original: 6px. Scaled: 4.5px -> 0.375rem
+      border-radius: 0.375rem;
+      padding: 0.2em 0.4em; // em units are responsive
       background-color: var(--bolt-elements-messages-inlineCode-background);
       color: var(--bolt-elements-messages-inlineCode-text);
     }
   }
 
   pre {
-    padding: 20px 16px;
-    border-radius: 6px;
+    // Original: 20px 16px. Scaled: 15px 12px -> 1.25rem 1rem
+    padding: 1.25rem 1rem;
+    // Original: 6px. Scaled: 4.5px -> 0.375rem
+    border-radius: 0.375rem;
   }
 
   pre:has(> code) {
@@ -104,16 +114,17 @@ $code-font-size: 13px;
 
   blockquote {
     margin: 0;
-    padding: 0 1em;
+    padding: 0 1em; // em units are responsive
     color: var(--bolt-elements-textTertiary);
-    border-left: 0.25em solid var(--bolt-elements-borderColor);
+    border-left: 0.25em solid var(--bolt-elements-borderColor); // em units are responsive
   }
 
   :is(ul, ol) {
     @include not-inside-actions {
-      padding-left: 2em;
+      padding-left: 2em; // em units are responsive
       margin-block-start: 0;
-      margin-block-end: 16px;
+      // Original: 16px. Scaled: 12px -> 1rem
+      margin-block-end: 1rem;
     }
   }
 
@@ -132,11 +143,13 @@ $code-font-size: 13px;
   li {
     @include not-inside-actions {
       & + li {
-        margin-block-start: 8px;
+        // Original: 8px. Scaled: 6px -> 0.5rem
+        margin-block-start: 0.5rem;
       }
 
       > *:not(:last-child) {
-        margin-block-end: 16px;
+        // Original: 16px. Scaled: 12px -> 1rem
+        margin-block-end: 1rem;
       }
     }
   }
@@ -147,9 +160,10 @@ $code-font-size: 13px;
   }
 
   hr {
-    height: 0.25em;
+    height: 0.25em; // em units are responsive
     padding: 0;
-    margin: 24px 0;
+    // Original: 24px. Scaled: 18px -> 1.5rem
+    margin: 1.5rem 0;
     background-color: var(--bolt-elements-borderColor);
     border: 0;
   }
@@ -157,15 +171,18 @@ $code-font-size: 13px;
   table {
     border-collapse: collapse;
     width: 100%;
-    margin-block-end: 16px;
+    // Original: 16px. Scaled: 12px -> 1rem
+    margin-block-end: 1rem;
 
     :is(th, td) {
-      padding: 6px 13px;
-      border: 1px solid #dfe2e5;
+      // Original: 6px 13px. Scaled: 4.5px 9.75px -> 0.375rem 0.8125rem
+      padding: 0.375rem 0.8125rem;
+      // Original: 1px. Scaled: 0.75px -> 0.0625rem (border color #dfe2e5 might need to become a CSS var if it's theme dependent)
+      border: 0.0625rem solid #dfe2e5;
     }
 
     tr:nth-child(2n) {
-      background-color: #f6f8fa;
+      background-color: #f6f8fa; // This color might need to be a CSS var for theming if not already
     }
   }
 }

@@ -19,7 +19,8 @@ const menuVariants = {
   closed: {
     opacity: 0,
     visibility: 'hidden',
-    left: '-340px',
+    // Original: -340px. Scaled: -255px -> -21.25rem
+    left: '-21.25rem',
     transition: {
       duration: 0.2,
       ease: cubicEasingFn,
@@ -329,9 +330,10 @@ export const Menu = () => {
         initial="closed"
         animate={open ? 'open' : 'closed'}
         variants={menuVariants}
-        style={{ width: '340px' }}
+        // Original: width: '340px'. Scaled: 255px -> w-[21.25rem]
+        // UnoCSS class w-[21.25rem] is preferred over style attribute for consistency
         className={classNames(
-          'flex selection-accent flex-col side-menu fixed top-0 h-full',
+          'w-[21.25rem] flex selection-accent flex-col side-menu fixed top-0 h-full',
           'bg-white dark:bg-gray-950 border-r border-gray-100 dark:border-gray-800/50',
           'shadow-sm text-sm',
           isSettingsOpen ? 'z-40' : 'z-sidebar',
@@ -343,7 +345,8 @@ export const Menu = () => {
             <span className="font-medium text-sm text-gray-900 dark:text-white truncate">
               {profile?.username || 'Guest User'}
             </span>
-            <div className="flex items-center justify-center w-[32px] h-[32px] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0">
+            {/* Original: w-[32px] h-[32px]. Scaled: 24px -> w-[2rem] h-[2rem] */}
+            <div className="flex items-center justify-center w-[2rem] h-[2rem] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0">
               {profile?.avatar ? (
                 <img
                   src={profile.avatar}

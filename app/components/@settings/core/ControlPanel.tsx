@@ -100,7 +100,8 @@ const AnimatedSwitch = ({ checked, onCheckedChange, id, label }: AnimatedSwitchP
         checked={checked}
         onCheckedChange={onCheckedChange}
         className={classNames(
-          'relative inline-flex h-6 w-11 items-center rounded-full',
+          // Original: h-6 (24px) w-11 (44px). Scaled: h-[1.5rem] (18px) w-[2.75rem] (33px)
+          'relative inline-flex h-[1.5rem] w-[2.75rem] items-center rounded-full',
           'transition-all duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]',
           'bg-gray-200 dark:bg-gray-700',
           'data-[state=checked]:bg-purple-500',
@@ -111,8 +112,10 @@ const AnimatedSwitch = ({ checked, onCheckedChange, id, label }: AnimatedSwitchP
       >
         <motion.span
           className={classNames(
-            'absolute left-[2px] top-[2px]',
-            'inline-block h-5 w-5 rounded-full',
+            // Original: left-[2px] top-[2px]. Scaled: left-[0.125rem] top-[0.125rem] (1.5px)
+            // Original: h-5 w-5 (20px). Scaled: h-[1.25rem] w-[1.25rem] (15px)
+            'absolute left-[0.125rem] top-[0.125rem]',
+            'inline-block h-[1.25rem] w-[1.25rem] rounded-full',
             'bg-white shadow-lg',
             'transition-shadow duration-300',
             'group-hover:shadow-md group-active:shadow-sm',
@@ -143,7 +146,8 @@ const AnimatedSwitch = ({ checked, onCheckedChange, id, label }: AnimatedSwitchP
       <div className="flex items-center gap-2">
         <label
           htmlFor={id}
-          className="text-sm text-gray-500 dark:text-gray-400 select-none cursor-pointer whitespace-nowrap w-[88px]"
+          // Removed w-[88px] and whitespace-nowrap to allow wrapping if needed on small screens
+          className="text-sm text-gray-500 dark:text-gray-400 select-none cursor-pointer"
         >
           {label}
         </label>
@@ -449,24 +453,29 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
               </div>
               <div className="relative z-10 flex flex-col h-full">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center space-x-4">
+                {/* Apply flex-wrap and adjust padding for smaller screens */}
+                <div className="flex flex-wrap items-center justify-between gap-y-2 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+                  {/* Left section: Back button and Title */}
+                  <div className="flex items-center space-x-2 sm:space-x-4">
                     {(activeTab || showTabManagement) && (
                       <button
                         onClick={handleBack}
-                        className="flex items-center justify-center w-8 h-8 rounded-full bg-transparent hover:bg-purple-500/10 dark:hover:bg-purple-500/20 group transition-all duration-200"
+                        // Scaled w-8 h-8 (1.75rem -> 21px, if original was 28px) to w-[1.5rem] h-[1.5rem] (18px)
+                        className="flex items-center justify-center w-[1.5rem] h-[1.5rem] rounded-full bg-transparent hover:bg-purple-500/10 dark:hover:bg-purple-500/20 group transition-all duration-200"
                       >
                         <div className="i-ph:arrow-left w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors" />
                       </button>
                     )}
-                    <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
+                    {/* Title scales with root font (text-xl -> 1.25rem -> 15px) */}
+                    <DialogTitle className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                       {showTabManagement ? 'Tab Management' : activeTab ? TAB_LABELS[activeTab] : 'Control Panel'}
                     </DialogTitle>
                   </div>
 
-                  <div className="flex items-center gap-6">
-                    {/* Mode Toggle */}
-                    <div className="flex items-center gap-2 min-w-[140px] border-r border-gray-200 dark:border-gray-800 pr-6">
+                  {/* Right section: Toggles and Actions - allow wrapping */}
+                  <div className="flex items-center gap-3 sm:gap-4 md:gap-6 flex-wrap justify-end">
+                    {/* Mode Toggle - stack on xs, row on sm+ */}
+                    <div className="flex flex-col items-start sm:flex-row sm:items-center gap-1 sm:gap-2 sm:border-r sm:border-gray-200 sm:dark:border-gray-800 sm:pr-3 md:pr-4 lg:pr-6">
                       <AnimatedSwitch
                         id="developer-mode"
                         checked={developerMode}
@@ -475,15 +484,16 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
                       />
                     </div>
 
-                    {/* Avatar and Dropdown */}
-                    <div className="border-l border-gray-200 dark:border-gray-800 pl-6">
+                    {/* Avatar and Dropdown - ensure it doesn't cause overflow */}
+                    <div className="sm:border-l sm:border-gray-200 sm:dark:border-gray-800 sm:pl-3 md:pl-4 lg:pl-6">
                       <AvatarDropdown onSelectTab={handleTabClick} />
                     </div>
 
                     {/* Close Button */}
                     <button
                       onClick={handleClose}
-                      className="flex items-center justify-center w-8 h-8 rounded-full bg-transparent hover:bg-purple-500/10 dark:hover:bg-purple-500/20 group transition-all duration-200"
+                      // Scaled w-8 h-8 to w-[1.5rem] h-[1.5rem] (18px)
+                      className="flex items-center justify-center w-[1.5rem] h-[1.5rem] rounded-full bg-transparent hover:bg-purple-500/10 dark:hover:bg-purple-500/20 group transition-all duration-200"
                     >
                       <div className="i-ph:x w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors" />
                     </button>

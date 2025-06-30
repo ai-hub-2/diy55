@@ -6,23 +6,27 @@ import { motion } from 'framer-motion';
 // Variant-specific styles
 const VARIANT_STYLES = {
   default: {
-    container: 'py-8 p-6',
+    container: 'py-8 p-6', // Should scale if rem-based
     icon: {
-      container: 'w-12 h-12 mb-3',
-      size: 'w-6 h-6',
+      // Original: w-12 h-12 (48px). Scaled: w-[3rem] h-[3rem] (36px)
+      container: 'w-[3rem] h-[3rem] mb-3',
+      // Original: w-6 h-6 (24px). Scaled: w-[1.5rem] h-[1.5rem] (18px)
+      size: 'w-[1.5rem] h-[1.5rem]',
     },
-    title: 'text-base',
+    title: 'text-base', // Should scale
     description: 'text-sm mt-1',
     actions: 'mt-4',
     buttonSize: 'default' as const,
   },
   compact: {
-    container: 'py-4 p-4',
+    container: 'py-4 p-4', // Should scale if rem-based
     icon: {
-      container: 'w-10 h-10 mb-2',
-      size: 'w-5 h-5',
+      // Original: w-10 h-10 (40px). Scaled: w-[2.5rem] h-[2.5rem] (30px)
+      container: 'w-[2.5rem] h-[2.5rem] mb-2',
+      // Original: w-5 h-5 (20px). Scaled: w-[1.25rem] h-[1.25rem] (15px)
+      size: 'w-[1.25rem] h-[1.25rem]',
     },
-    title: 'text-sm',
+    title: 'text-sm', // Should scale
     description: 'text-xs mt-0.5',
     actions: 'mt-3',
     buttonSize: 'sm' as const,

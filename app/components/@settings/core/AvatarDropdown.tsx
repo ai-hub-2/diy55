@@ -22,7 +22,8 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <motion.button
-          className="w-10 h-10 rounded-full bg-transparent flex items-center justify-center focus:outline-none"
+          // Original: w-10 h-10 (40px). Scaled: w-[2.5rem] h-[2.5rem] (30px)
+          className="w-[2.5rem] h-[2.5rem] rounded-full bg-transparent flex items-center justify-center focus:outline-none"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -36,7 +37,8 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
             />
           ) : (
             <div className="w-full h-full rounded-full flex items-center justify-center bg-white dark:bg-gray-800 text-gray-400 dark:text-gray-500">
-              <div className="i-ph:question w-6 h-6" />
+              {/* Original: w-6 h-6 (24px). Scaled: w-[1.5rem] h-[1.5rem] (18px) */}
+              <div className="i-ph:question w-[1.5rem] h-[1.5rem]" />
             </div>
           )}
         </motion.button>
@@ -45,14 +47,15 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className={classNames(
-            'min-w-[240px] z-[250]',
+            // Original: min-w-[240px]. Scaled: min-w-[15rem] (180px)
+            'min-w-[15rem] z-[250]',
             'bg-white dark:bg-[#141414]',
             'rounded-lg shadow-lg',
             'border border-gray-200/50 dark:border-gray-800/50',
             'animate-in fade-in-0 zoom-in-95',
             'py-1',
           )}
-          sideOffset={5}
+          sideOffset={4} // Original: 5. Scaled: 4 (approx 0.75 scaling)
           align="end"
         >
           <div
@@ -61,7 +64,8 @@ export const AvatarDropdown = ({ onSelectTab }: AvatarDropdownProps) => {
               'border-b border-gray-200/50 dark:border-gray-800/50',
             )}
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-gray-800 shadow-sm">
+            {/* Original: w-10 h-10 (40px). Scaled: w-[2.5rem] h-[2.5rem] (30px) */}
+            <div className="w-[2.5rem] h-[2.5rem] rounded-full overflow-hidden flex-shrink-0 bg-white dark:bg-gray-800 shadow-sm">
               {profile?.avatar ? (
                 <img
                   src={profile.avatar}

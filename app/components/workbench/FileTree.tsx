@@ -11,7 +11,13 @@ import { path } from '~/utils/path';
 
 const logger = createScopedLogger('FileTree');
 
-const NODE_PADDING_LEFT = 8;
+// Original: NODE_PADDING_LEFT = 8px. Scaled: 6px. In new rem (12px base): 0.5rem
+const NODE_PADDING_UNIT_REM = 0.5;
+// Original base indent 6px. Scaled: 4.5px. In new rem: ~0.375rem. Let's use 0.5rem for simplicity with NODE_PADDING_UNIT_REM or adjust base.
+// For style: paddingLeft: `${BASE_PADDING_REM + depth * NODE_PADDING_UNIT_REM}rem`
+// Let's make base padding also 0.5rem for a consistent indent step.
+const BASE_PADDING_REM = 0.5;
+
 const DEFAULT_HIDDEN_FILES = [/\/node_modules\//, /\/\.next/, /\/\.astro/];
 
 interface Props {
@@ -257,7 +263,7 @@ function InlineInput({ depth, placeholder, initialValue = '', onSubmit, onCancel
   return (
     <div
       className="flex items-center w-full px-2 bg-bolt-elements-background-depth-4 border border-bolt-elements-item-contentAccent py-0.5 text-bolt-elements-textPrimary"
-      style={{ paddingLeft: `${6 + depth * NODE_PADDING_LEFT}px` }}
+      style={{ paddingLeft: `${BASE_PADDING_REM + depth * NODE_PADDING_UNIT_REM}rem` }}
     >
       <div className="scale-120 shrink-0 i-ph:file-plus text-bolt-elements-textTertiary" />
       <input
@@ -501,9 +507,11 @@ function FileContextMenu({
         <ContextMenu.Portal>
           <ContextMenu.Content
             style={{ zIndex: 998 }}
-            className="border border-bolt-elements-borderColor rounded-md z-context-menu bg-bolt-elements-background-depth-1 dark:bg-bolt-elements-background-depth-2 data-[state=open]:animate-in animate-duration-100 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-98 w-56"
+            // Original: w-56 (224px). Scaled: 168px -> w-[14rem]
+            className="border border-bolt-elements-borderColor rounded-md z-context-menu bg-bolt-elements-background-depth-1 dark:bg-bolt-elements-background-depth-2 data-[state=open]:animate-in animate-duration-100 data-[state=open]:fade-in-0 data-[state=open]:zoom-in-98 w-[14rem]"
           >
-            <ContextMenu.Group className="p-1 border-b-px border-solid border-bolt-elements-borderColor">
+            {/* Original: border-b-px. Scaled: border-b-[0.0625rem] */}
+            <ContextMenu.Group className="p-1 border-b-[0.0625rem] border-solid border-bolt-elements-borderColor">
               <ContextMenuItem onSelect={() => setIsCreatingFile(true)}>
                 <div className="flex items-center gap-2">
                   <div className="i-ph:file-plus" />
@@ -522,7 +530,8 @@ function FileContextMenu({
               <ContextMenuItem onSelect={onCopyRelativePath}>Copy relative path</ContextMenuItem>
             </ContextMenu.Group>
             {/* Add lock/unlock options for files and folders */}
-            <ContextMenu.Group className="p-1 border-t-px border-solid border-bolt-elements-borderColor">
+            {/* Original: border-t-px. Scaled: border-t-[0.0625rem] */}
+            <ContextMenu.Group className="p-1 border-t-[0.0625rem] border-solid border-bolt-elements-borderColor">
               {!isFolder ? (
                 <>
                   <ContextMenuItem onSelect={handleLockFile}>
@@ -556,7 +565,8 @@ function FileContextMenu({
               )}
             </ContextMenu.Group>
             {/* Add delete option in a new group */}
-            <ContextMenu.Group className="p-1 border-t-px border-solid border-bolt-elements-borderColor">
+            {/* Original: border-t-px. Scaled: border-t-[0.0625rem] */}
+            <ContextMenu.Group className="p-1 border-t-[0.0625rem] border-solid border-bolt-elements-borderColor">
               <ContextMenuItem onSelect={handleDelete}>
                 <div className="flex items-center gap-2 text-red-500">
                   <div className="i-ph:trash" />
@@ -739,7 +749,7 @@ function NodeButton({ depth, iconClasses, onClick, className, children }: Button
         'flex items-center gap-1.5 w-full pr-2 border-2 border-transparent text-faded py-0.5',
         className,
       )}
-      style={{ paddingLeft: `${6 + depth * NODE_PADDING_LEFT}px` }}
+      style={{ paddingLeft: `${BASE_PADDING_REM + depth * NODE_PADDING_UNIT_REM}rem` }}
       onClick={() => onClick?.()}
     >
       <div className={classNames('scale-120 shrink-0', iconClasses)}></div>

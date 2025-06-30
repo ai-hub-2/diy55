@@ -116,7 +116,8 @@ export const Dialog = memo(({ children, className, showCloseButton = true, onClo
       <RadixDialog.Content asChild>
         <motion.div
           className={classNames(
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-950 rounded-lg shadow-xl border border-bolt-elements-borderColor z-[9999] w-[520px] focus:outline-none',
+            // Original: w-[520px]. Scaled: w-full max-w-[32.5rem] (390px)
+            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-950 rounded-lg shadow-xl border border-bolt-elements-borderColor z-[9999] w-full max-w-[32.5rem] focus:outline-none',
             className,
           )}
           initial="closed"
@@ -333,9 +334,12 @@ export function SelectionDialog({
   };
 
   // Calculate the height for the virtualized list
+  // Original itemSize 60, scaled 45. Original offset 40, scaled 30.
+  const scaledItemSize = 45;
+  const scaledOffset = 30;
   const listHeight = Math.min(
-    items.length * 60,
-    parseInt(maxHeight.replace('vh', '')) * window.innerHeight * 0.01 - 40,
+    items.length * scaledItemSize,
+    parseInt(maxHeight.replace('vh', '')) * window.innerHeight * 0.01 - scaledOffset,
   );
 
   // Render each item in the virtualized list
@@ -415,7 +419,7 @@ export function SelectionDialog({
                   height={listHeight}
                   width="100%"
                   itemCount={items.length}
-                  itemSize={60}
+                  itemSize={scaledItemSize} // Use scaled item size
                   className="scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-bolt-elements-bg-depth-3"
                 >
                   {ItemRenderer}

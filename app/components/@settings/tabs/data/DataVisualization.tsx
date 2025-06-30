@@ -216,9 +216,9 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
           color: chartColors.text,
           font: {
             weight: 'bold' as const,
-            size: 12,
+            size: 9, // Original: 12. Scaled: 9
           },
-          padding: 16,
+          padding: 12, // Original: 16. Scaled: 12
           usePointStyle: true,
         },
       },
@@ -226,10 +226,10 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         display: true,
         color: chartColors.text,
         font: {
-          size: 16,
+          size: 12, // Original: 16. Scaled: 12
           weight: 'bold' as const,
         },
-        padding: 16,
+        padding: 12, // Original: 16. Scaled: 12
       },
       tooltip: {
         titleColor: chartColors.text,
@@ -310,7 +310,8 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
   if (chats.length === 0) {
     return (
       <div className="text-center py-8">
-        <div className="i-ph-chart-line-duotone w-12 h-12 mx-auto mb-4 text-bolt-elements-textTertiary opacity-80" />
+        {/* Original: w-12 h-12 (48px). Scaled: w-[3rem] h-[3rem] (36px) */}
+        <div className="i-ph-chart-line-duotone w-[3rem] h-[3rem] mx-auto mb-4 text-bolt-elements-textTertiary opacity-80" />
         <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-2">No Data Available</h3>
         <p className="text-bolt-elements-textSecondary">
           Start creating chats to see your usage statistics and data visualization.
@@ -333,7 +334,8 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total Chats</h3>
           <div className={statClasses}>
-            <div className="i-ph-chats-duotone w-8 h-8 text-indigo-500 dark:text-indigo-400" />
+            {/* Original: w-8 h-8 (32px). Scaled: w-[2rem] h-[2rem] (24px) */}
+            <div className="i-ph:chats-duotone w-[2rem] h-[2rem] text-indigo-500 dark:text-indigo-400" />
             <span>{chats.length}</span>
           </div>
         </div>
@@ -341,7 +343,8 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total Messages</h3>
           <div className={statClasses}>
-            <div className="i-ph-chat-text-duotone w-8 h-8 text-pink-500 dark:text-pink-400" />
+            {/* Original: w-8 h-8 (32px). Scaled: w-[2rem] h-[2rem] (24px) */}
+            <div className="i-ph:chat-text-duotone w-[2rem] h-[2rem] text-pink-500 dark:text-pink-400" />
             <span>{Object.values(messagesByRole).reduce((sum, count) => sum + count, 0)}</span>
           </div>
         </div>
@@ -349,7 +352,8 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Avg. Messages/Chat</h3>
           <div className={statClasses}>
-            <div className="i-ph-chart-bar-duotone w-8 h-8 text-green-500 dark:text-green-400" />
+            {/* Original: w-8 h-8 (32px). Scaled: w-[2rem] h-[2rem] (24px) */}
+            <div className="i-ph:chart-bar-duotone w-[2rem] h-[2rem] text-green-500 dark:text-green-400" />
             <span>{averageMessagesPerChat.toFixed(1)}</span>
           </div>
         </div>
@@ -358,14 +362,16 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Chat History</h3>
-          <div className="h-64">
+          {/* Original: h-64 (256px). Scaled: h-[16rem] (192px) */}
+          <div className="h-[16rem]">
             <Bar data={chartData.history} options={chartOptions} />
           </div>
         </div>
 
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Message Distribution</h3>
-          <div className="h-64">
+          {/* Original: h-64 (256px). Scaled: h-[16rem] (192px) */}
+          <div className="h-[16rem]">
             <Pie data={chartData.roles} options={pieOptions} />
           </div>
         </div>
@@ -374,7 +380,8 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       {apiKeyUsage.length > 0 && (
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">API Usage by Provider</h3>
-          <div className="h-64">
+          {/* Original: h-64 (256px). Scaled: h-[16rem] (192px) */}
+          <div className="h-[16rem]">
             <Pie data={chartData.apiUsage} options={pieOptions} />
           </div>
         </div>

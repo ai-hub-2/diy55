@@ -108,7 +108,8 @@ export default function SettingsTab() {
             <div className="i-ph:bell-fill w-4 h-4 text-bolt-elements-textSecondary" />
             <label className="block text-sm text-bolt-elements-textSecondary">Notifications</label>
           </div>
-          <div className="flex items-center justify-between">
+          {/* Stack on small screens, row on medium+ */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-sm text-bolt-elements-textSecondary">
               {settings.notifications ? 'Notifications are enabled' : 'Notifications are disabled'}
             </span>
@@ -188,12 +189,14 @@ export default function SettingsTab() {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center justify-between p-2 rounded-lg bg-[#FAFAFA] dark:bg-[#1A1A1A]">
-            <div className="flex flex-col">
+          {/* Stack command and keys on small screens */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-2 rounded-lg bg-[#FAFAFA] dark:bg-[#1A1A1A]">
+            <div className="flex flex-col mb-2 sm:mb-0">
               <span className="text-sm text-bolt-elements-textPrimary">Toggle Theme</span>
               <span className="text-xs text-bolt-elements-textSecondary">Switch between light and dark mode</span>
             </div>
-            <div className="flex items-center gap-1">
+            {/* Ensure keys wrap nicely if screen is extremely narrow */}
+            <div className="flex items-center gap-1 flex-wrap">
               <kbd className="px-2 py-1 text-xs font-semibold text-bolt-elements-textSecondary bg-white dark:bg-[#0A0A0A] border border-[#E5E5E5] dark:border-[#1A1A1A] rounded shadow-sm">
                 {getModifierSymbol('meta')}
               </kbd>

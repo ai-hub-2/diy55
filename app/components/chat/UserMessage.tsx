@@ -25,7 +25,8 @@ export function UserMessage({ content }: UserMessageProps) {
               src={item.image}
               alt={`Image ${index + 1}`}
               className="max-w-full h-auto rounded-lg"
-              style={{ maxHeight: '512px', objectFit: 'contain' }}
+              // Original maxHeight: '512px'. Scaled: '32rem' (384px with 12px root)
+              style={{ maxHeight: '32rem', objectFit: 'contain' }}
             />
           ))}
         </div>
@@ -36,7 +37,8 @@ export function UserMessage({ content }: UserMessageProps) {
   const textContent = stripMetadata(content);
 
   return (
-    <div className="overflow-hidden pt-[4px]">
+    // Original pt-[4px]. Scaled: pt-[0.25rem] (3px with 12px root)
+    <div className="overflow-hidden pt-[0.25rem]">
       <Markdown html>{textContent}</Markdown>
     </div>
   );

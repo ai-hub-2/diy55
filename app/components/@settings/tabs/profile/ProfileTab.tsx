@@ -64,11 +64,16 @@ export default function ProfileTab() {
       <div className="space-y-6">
         {/* Personal Information Section */}
         <div>
-          {/* Avatar Upload */}
-          <div className="flex items-start gap-6 mb-8">
+          {/* Avatar Upload - stack on small screens, row on medium+ */}
+          <div className="flex flex-col items-center sm:flex-row sm:items-start gap-4 sm:gap-6 mb-8">
             <div
               className={classNames(
-                'w-24 h-24 rounded-full overflow-hidden',
+                // Original: w-24 h-24 (96px). Scaled: w-[6rem] h-[6rem] (72px)
+                // Added sm:mx-0 for alignment when stacking
+                'mx-auto sm:mx-0 w-[6rem] h-[6rem] rounded-full overflow-hidden',
+                'bg-gray-100 dark:bg-gray-800/50',
+                'flex items-center justify-center',
+                'w-[6rem] h-[6rem] rounded-full overflow-hidden',
                 'bg-gray-100 dark:bg-gray-800/50',
                 'flex items-center justify-center',
                 'ring-1 ring-gray-200 dark:ring-gray-700',
@@ -89,7 +94,8 @@ export default function ProfileTab() {
                   )}
                 />
               ) : (
-                <div className="i-ph:robot-fill w-16 h-16 text-gray-400 dark:text-gray-500 transition-colors group-hover:text-purple-500/70 transform -translate-y-1" />
+                // Original: w-16 h-16 (64px). Scaled: w-[4rem] h-[4rem] (48px)
+                <div className="i-ph:robot-fill w-[4rem] h-[4rem] text-gray-400 dark:text-gray-500 transition-colors group-hover:text-purple-500/70 transform -translate-y-1" />
               )}
 
               <label
@@ -116,7 +122,8 @@ export default function ProfileTab() {
               </label>
             </div>
 
-            <div className="flex-1 pt-1">
+            {/* Text content - center text when stacked */}
+            <div className="flex-1 pt-1 text-center sm:text-left">
               <label className="block text-base font-medium text-gray-900 dark:text-gray-100 mb-1">
                 Profile Picture
               </label>

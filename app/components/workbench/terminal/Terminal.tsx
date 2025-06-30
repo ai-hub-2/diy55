@@ -215,7 +215,7 @@ export const Terminal = memo(
 
       return (
         <div className={className} style={{ height: '100%', width: '100%' }}>
-          {!readonly && !isConnected && !webSocketRef.current?.url.includes('localhost') && ( // Added a condition to hide "Connecting to shell..." for localhost connections
+          {!readonly && !isConnected && (
             <div style={{ position: 'absolute', top: '5px', left: '5px', color: 'yellow', zIndex: 10 }}>
               Connecting to shell...
             </div>

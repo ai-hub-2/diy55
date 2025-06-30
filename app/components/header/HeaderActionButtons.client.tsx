@@ -70,12 +70,13 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
   return (
     <div className="flex">
       <div className="relative" ref={dropdownRef}>
+        {/* Reduced padding on xs screens for the Deploy button via px-2 sm:px-4 */}
         <div className="flex border border-bolt-elements-borderColor rounded-md overflow-hidden mr-2 text-sm">
           <Button
             active
             disabled={isDeploying || !activePreview || isStreaming}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="px-4 hover:bg-bolt-elements-item-backgroundActive flex items-center gap-2"
+            className="px-2 sm:px-4 hover:bg-bolt-elements-item-backgroundActive flex items-center gap-2"
           >
             {isDeploying ? `Deploying to ${deployingTo}...` : 'Deploy'}
             <div
@@ -158,7 +159,8 @@ export function HeaderActionButtons({}: HeaderActionButtonsProps) {
         >
           <div className="i-bolt:chat text-sm" />
         </Button>
-        <div className="w-[1px] bg-bolt-elements-borderColor" />
+        {/* Original: w-[1px]. Scaled: w-[0.0625rem] */}
+        <div className="w-[0.0625rem] bg-bolt-elements-borderColor" />
         <Button
           active={showWorkbench}
           onClick={() => {

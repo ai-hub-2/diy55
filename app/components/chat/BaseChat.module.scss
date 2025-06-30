@@ -19,8 +19,10 @@
 }
 
 .PromptEffectContainer {
-  --prompt-container-offset: 50px;
-  --prompt-line-stroke-width: 1px;
+  // Original: 50px. Scaled: 37.5px -> 3.125rem
+  --prompt-container-offset: 3.125rem;
+  // Original: 1px. Scaled: 0.75px -> 0.0625rem
+  --prompt-line-stroke-width: 0.0625rem;
   position: absolute;
   pointer-events: none;
   inset: calc(var(--prompt-container-offset) / -2);
@@ -33,12 +35,14 @@
   height: calc(100% - var(--prompt-container-offset) + var(--prompt-line-stroke-width));
   x: calc(var(--prompt-container-offset) / 2 - var(--prompt-line-stroke-width) / 2);
   y: calc(var(--prompt-container-offset) / 2 - var(--prompt-line-stroke-width) / 2);
-  rx: calc(8px - var(--prompt-line-stroke-width));
+  // Original rx: 8px. Scaled: 6px -> 0.5rem
+  rx: calc(0.5rem - var(--prompt-line-stroke-width));
   fill: transparent;
   stroke-width: var(--prompt-line-stroke-width);
   stroke: url(#line-gradient);
-  stroke-dasharray: 35px 65px;
-  stroke-dashoffset: 10;
+  // Original: 35px 65px. Scaled: 26.25px 48.75px -> 2.1875rem 4.0625rem
+  stroke-dasharray: 2.1875rem 4.0625rem;
+  stroke-dashoffset: 10; // Unitless, fine as is
 }
 
 .PromptShine {

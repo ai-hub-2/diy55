@@ -12,7 +12,8 @@ export const Switch = memo(({ className, onCheckedChange, checked }: SwitchProps
   return (
     <SwitchPrimitive.Root
       className={classNames(
-        'relative h-6 w-11 cursor-pointer rounded-full bg-bolt-elements-button-primary-background',
+        // Original: h-6 (24px) w-11 (44px). Scaled: h-[1.5rem] (18px) w-[2.75rem] (33px)
+        'relative h-[1.5rem] w-[2.75rem] cursor-pointer rounded-full bg-bolt-elements-button-primary-background',
         'transition-colors duration-200 ease-in-out',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
         'disabled:cursor-not-allowed disabled:opacity-50',
@@ -24,10 +25,13 @@ export const Switch = memo(({ className, onCheckedChange, checked }: SwitchProps
     >
       <SwitchPrimitive.Thumb
         className={classNames(
-          'block h-5 w-5 rounded-full bg-white',
+          // Original: h-5 w-5 (20px). Scaled: h-[1.25rem] w-[1.25rem] (15px)
+          'block h-[1.25rem] w-[1.25rem] rounded-full bg-white',
           'shadow-lg shadow-black/20',
           'transition-transform duration-200 ease-in-out',
-          'translate-x-0.5',
+          // Original: translate-x-0.5 (2px). Scaled: translate-x-[0.167rem] (approx 2px at 12px root)
+          'translate-x-[0.167rem]',
+          // data-[state=checked]:translate-x-[1.375rem] is already rem and will scale correctly (22px -> 16.5px)
           'data-[state=checked]:translate-x-[1.375rem]',
           'will-change-transform',
         )}

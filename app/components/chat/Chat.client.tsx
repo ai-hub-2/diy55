@@ -233,7 +233,8 @@ export const ChatImpl = memo(
     const { enhancingPrompt, promptEnhanced, enhancePrompt, resetEnhancer } = usePromptEnhancer();
     const { parsedMessages, parseMessages } = useMessageParser();
 
-    const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
+    // Original: 400px / 200px. Scaled: 300px / 150px.
+    const TEXTAREA_MAX_HEIGHT = chatStarted ? 300 : 150;
 
     useEffect(() => {
       chatStore.setKey('started', initialMessages.length > 0);
