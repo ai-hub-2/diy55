@@ -6,8 +6,10 @@ import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import * as dotenv from 'dotenv';
 import { execSync } from 'child_process';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, existsSync } from 'fs'; // Added existsSync
+import { join, resolve as pathResolve } from 'path'; // Added resolve and named it pathResolve to avoid conflict
+import MonacoEditorWebpackPlugin from 'monaco-editor-webpack-plugin';
+
 
 dotenv.config();
 
@@ -131,6 +133,7 @@ export default defineConfig((config) => {
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
+      monacoEditorPlugin(), // Add MonacoWebpackPlugin here
     ],
     envPrefix: [
       'VITE_',
@@ -171,6 +174,103 @@ function chrome129IssuePlugin() {
 
         next();
       });
+    },
+  };
+}
+
+// Helper function to correctly configure Monaco Editor Webpack Plugin for Vite
+function monacoEditorPlugin() {
+  return {
+    name: 'monaco-editor-vite-bridge',
+    config(config: any, { command }: any) {
+      if (command === 'build' || command === 'serve') {
+        if (!config.plugins) config.plugins = [];
+        // Check if the plugin is already added to prevent duplicates if this config hook runs multiple times
+        if (!config.plugins.some((p: any) => p && p.constructor && p.constructor.name === 'MonacoEditorWebpackPlugin')) {
+          config.plugins.push(
+            new MonacoEditorWebpackPlugin({
+              languages: ['typescript', 'javascript', 'css', 'html', 'json', 'python', 'markdown'],
+              // Consider adding features like 'bracketMatching', 'wordHighlighter' if needed
+              features: ['!gotoSymbol'], // Example: disable a feature if not needed
+            })
+          );
+        }
+
+        if (!config.build) config.build = {};
+        if (!config.build.rollupOptions) config.build.rollupOptions = {};
+        if (!config.build.rollupOptions.output) config.build.rollupOptions.output = {};
+
+        const ensureOutputOptions = (outputOptions: any) => {
+          if (!outputOptions.entryFileNames) outputOptions.entryFileNames = 'assets/[name]-[hash].js';
+          if (!outputOptions.chunkFileNames) outputOptions.chunkFileNames = 'assets/[name]-[hash].js';
+          if (!outputOptions.assetFileNames) outputOptions.assetFileNames = 'assets/[name]-[hash].[ext]';
+        };
+
+        if (Array.isArray(config.build.rollupOptions.output)) {
+          config.build.rollupOptions.output.forEach(ensureOutputOptions);
+        } else {
+          ensureOutputOptions(config.build.rollupOptions.output);
+        }
+
+        // Manual chunks for Monaco (optional, but can help with bundle splitting)
+        const existingManualChunks = config.build.rollupOptions.output.manualChunks;
+        config.build.rollupOptions.output.manualChunks = (id: string, { getModuleInfo }: any) => {
+          if (typeof existingManualChunks === 'function') {
+            const existingResult = existingManualChunks(id, { getModuleInfo });
+            if (existingResult) return existingResult;
+          } else if (typeof existingManualChunks === 'object' && existingManualChunks !== null) {
+             for (const chunkName in existingManualChunks) {
+                 if (existingManualChunks[chunkName].includes(id)) return chunkName;
+             }
+          }
+
+          if (id.includes('node_modules/monaco-editor')) {
+            return 'monaco-editor';
+          }
+          // You might want to add more specific chunking for monaco workers if needed
+          // e.g., if (id.includes('monaco-editor') && id.includes('worker')) return 'monaco-worker';
+        };
+
+
+        if (command === 'serve') {
+          if (!config.server) config.server = {};
+          if (!config.server.fs) config.server.fs = {};
+          if (!config.server.fs.allow) config.server.fs.allow = [];
+
+          // Allow serving from monaco-editor's distribution folders
+          const monacoPath = pathResolve(__dirname, 'node_modules/monaco-editor');
+          if (existsSync(monacoPath)) {
+            config.server.fs.allow.push(monacoPath);
+            // Specifically allow worker paths if they are in a subdirectory like 'esm/vs/editor/editor.worker'
+            const workerBasePath = pathResolve(monacoPath, 'esm/vs/editor');
+             if (existsSync(workerBasePath)) {
+                config.server.fs.allow.push(workerBasePath);
+            }
+          }
+        }
+         // OptimizeDeps for Monaco Editor (important for dev server startup speed)
+        if (!config.optimizeDeps) config.optimizeDeps = {};
+        if (!config.optimizeDeps.include) config.optimizeDeps.include = [];
+        // Add Monaco Editor specific paths that Vite should pre-bundle
+        // This list might need adjustment based on the features and languages you use
+        const monacoDeps = [
+          'monaco-editor/esm/vs/editor/editor.api',
+          'monaco-editor/esm/vs/editor/editor.all',
+          'monaco-editor/esm/vs/language/typescript/ts.worker',
+          'monaco-editor/esm/vs/language/json/json.worker',
+          'monaco-editor/esm/vs/language/css/css.worker',
+          'monaco-editor/esm/vs/language/html/html.worker',
+          'monaco-editor/esm/vs/basic-languages/python/python',
+          'monaco-editor/esm/vs/basic-languages/markdown/markdown',
+          // Add other languages or specific editor parts if needed
+        ];
+        for (const dep of monacoDeps) {
+            if (!config.optimizeDeps.include.includes(dep)) {
+                config.optimizeDeps.include.push(dep);
+            }
+        }
+      }
+      return config;
     },
   };
 }

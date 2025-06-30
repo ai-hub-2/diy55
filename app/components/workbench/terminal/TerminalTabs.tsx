@@ -1,15 +1,21 @@
 import { useStore } from '@nanostores/react';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, lazy, Suspense } from 'react'; // Added lazy and Suspense
 import { Panel, type ImperativePanelHandle } from 'react-resizable-panels';
 import { IconButton } from '~/components/ui/IconButton';
 import { shortcutEventEmitter } from '~/lib/hooks';
 import { themeStore } from '~/lib/stores/theme';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { classNames } from '~/utils/classNames';
-import { Terminal, type TerminalRef } from './Terminal';
+import type { TerminalRef } from './Terminal'; // Import type only
 import { createScopedLogger } from '~/utils/logger';
+import { LoadingDots } from '~/components/ui/LoadingDots'; // For Suspense fallback
 
-const logger = createScopedLogger('Terminal');
+const logger = createScopedLogger('TerminalTabs'); // Changed logger scope name for clarity
+
+// Lazy load Terminal component
+const Terminal = lazy(() =>
+  import('./Terminal').then(module => ({ default: module.Terminal }))
+);
 
 const MAX_TERMINALS = 3;
 export const DEFAULT_TERMINAL_SIZE = 25;
@@ -147,35 +153,37 @@ export const TerminalTabs = memo(() => {
 
             if (index == 0) {
               return (
-                <Terminal
-                  key={index}
-                  id={`terminal_${index}`}
-                  className={classNames('h-full overflow-hidden modern-scrollbar-invert', {
-                    hidden: !isActive,
-                  })}
-                  ref={(ref) => {
-                    terminalRefs.current.push(ref);
-                  }}
-                  onTerminalReady={(terminal) => workbenchStore.attachBoltTerminal(terminal)}
-                  onTerminalResize={(cols, rows) => workbenchStore.onTerminalResize(cols, rows)}
-                  theme={theme}
-                />
+                <div key={index} className={classNames('h-full overflow-hidden', { hidden: !isActive })}>
+                  <Suspense fallback={<div className="flex items-center justify-center h-full"><LoadingDots /> Loading Terminal...</div>}>
+                    <Terminal
+                      id={`terminal_${index}`}
+                      className={classNames('h-full modern-scrollbar-invert')}
+                      ref={(ref: TerminalRef | null) => { // Added type for ref
+                        terminalRefs.current[index] = ref; // Assign to specific index
+                      }}
+                      onTerminalReady={(terminal) => workbenchStore.attachBoltTerminal(terminal)}
+                      onTerminalResize={(cols, rows) => workbenchStore.onTerminalResize(cols, rows)}
+                      theme={theme}
+                    />
+                  </Suspense>
+                </div>
               );
             } else {
               return (
-                <Terminal
-                  key={index}
-                  id={`terminal_${index}`}
-                  className={classNames('modern-scrollbar h-full overflow-hidden', {
-                    hidden: !isActive,
-                  })}
-                  ref={(ref) => {
-                    terminalRefs.current.push(ref);
-                  }}
-                  onTerminalReady={(terminal) => workbenchStore.attachTerminal(terminal)}
-                  onTerminalResize={(cols, rows) => workbenchStore.onTerminalResize(cols, rows)}
-                  theme={theme}
-                />
+                <div key={index} className={classNames('h-full overflow-hidden', { hidden: !isActive })}>
+                  <Suspense fallback={<div className="flex items-center justify-center h-full"><LoadingDots /> Loading Terminal...</div>}>
+                    <Terminal
+                      id={`terminal_${index}`}
+                      className={classNames('h-full modern-scrollbar')}
+                      ref={(ref: TerminalRef | null) => { // Added type for ref
+                        terminalRefs.current[index] = ref; // Assign to specific index
+                      }}
+                      onTerminalReady={(terminal) => workbenchStore.attachTerminal(terminal)}
+                      onTerminalResize={(cols, rows) => workbenchStore.onTerminalResize(cols, rows)}
+                      theme={theme}
+                    />
+                  </Suspense>
+                </div>
               );
             }
           })}

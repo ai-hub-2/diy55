@@ -1,5 +1,5 @@
 import { atom, computed, map, type MapStore, type WritableAtom } from 'nanostores';
-import type { EditorDocument, ScrollPosition } from '~/components/editor/codemirror/CodeMirrorEditor';
+import type { EditorDocument, ScrollPosition } from '~/components/editor/monaco/MonacoEditor';
 import type { FileMap, FilesStore } from './files';
 import { createScopedLogger } from '~/utils/logger';
 

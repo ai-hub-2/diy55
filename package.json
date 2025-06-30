@@ -124,6 +124,8 @@
     "jszip": "^3.10.1",
     "lucide-react": "^0.485.0",
     "mime": "^4.0.4",
+    "monaco-editor": "^0.52.2",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "nanostores": "^0.10.3",
     "ollama-ai-provider": "^0.15.2",
     "path-browserify": "^1.0.1",
@@ -151,6 +153,8 @@
     "unist-util-visit": "^5.0.0",
     "use-debounce": "^10.0.4",
     "vite-plugin-node-polyfills": "^0.22.0",
+    "y-monaco": "^0.1.6",
+    "yjs": "^13.6.27",
     "zod": "^3.24.1",
     "zustand": "^5.0.3"
   },

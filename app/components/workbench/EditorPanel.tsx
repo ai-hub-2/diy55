@@ -1,15 +1,14 @@
 import { useStore } from '@nanostores/react';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, lazy, Suspense } from 'react'; // Added lazy and Suspense
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import * as Tabs from '@radix-ui/react-tabs';
-import {
-  CodeMirrorEditor,
-  type EditorDocument,
-  type EditorSettings,
-  type OnChangeCallback as OnEditorChange,
-  type OnSaveCallback as OnEditorSave,
-  type OnScrollCallback as OnEditorScroll,
-} from '~/components/editor/codemirror/CodeMirrorEditor';
+import type { // Importing types directly
+  EditorDocument,
+  EditorSettings,
+  OnChangeCallback as OnEditorChange,
+  OnSaveCallback as OnEditorSave,
+  OnScrollCallback as OnEditorScroll,
+} from '~/components/editor/monaco/MonacoEditor'; // Keep type imports
 import { PanelHeader } from '~/components/ui/PanelHeader';
 import { PanelHeaderButton } from '~/components/ui/PanelHeaderButton';
 import type { FileMap } from '~/lib/stores/files';
@@ -24,7 +23,13 @@ import { DEFAULT_TERMINAL_SIZE, TerminalTabs } from './terminal/TerminalTabs';
 import { workbenchStore } from '~/lib/stores/workbench';
 import { Search } from './Search'; // <-- Ensure Search is imported
 import { classNames } from '~/utils/classNames'; // <-- Import classNames if not already present
-import { LockManager } from './LockManager'; // <-- Import LockManager
+import { LockManager } from './LockManager';
+import { LoadingDots } from '~/components/ui/LoadingDots'; // For Suspense fallback
+
+// Lazy load MonacoEditor
+const MonacoEditor = lazy(() =>
+  import('~/components/editor/monaco/MonacoEditor').then(module => ({ default: module.MonacoEditor }))
+);
 
 interface EditorPanelProps {
   files?: FileMap;
@@ -164,16 +169,18 @@ export const EditorPanel = memo(
                 )}
               </PanelHeader>
               <div className="h-full flex-1 overflow-hidden modern-scrollbar">
-                <CodeMirrorEditor
-                  theme={theme}
-                  editable={!isStreaming && editorDocument !== undefined}
-                  settings={editorSettings}
-                  doc={editorDocument}
-                  autoFocusOnDocumentChange={!isMobile()}
-                  onScroll={onEditorScroll}
-                  onChange={onEditorChange}
-                  onSave={onFileSave}
-                />
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><LoadingDots /> Loading Editor...</div>}>
+                  <MonacoEditor
+                    theme={theme}
+                    editable={!isStreaming && editorDocument !== undefined}
+                    settings={editorSettings}
+                    doc={editorDocument}
+                    autoFocusOnDocumentChange={!isMobile()}
+                    onScroll={onEditorScroll}
+                    onChange={onEditorChange}
+                    onSave={onFileSave}
+                  />
+                </Suspense>
               </div>
             </Panel>
           </PanelGroup>
