@@ -13,6 +13,10 @@ body {
   width: 100%;
 }
 
+html {
+  font-size: 12px; /* Base font size for 1rem, achieving ~25% reduction from 16px */
+}
+
 :root {
   --gradient-opacity: 0.8;
   --primary-color: rgba(158, 117, 240, var(--gradient-opacity));
